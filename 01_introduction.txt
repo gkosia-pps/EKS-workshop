@@ -1,0 +1,52 @@
+Twelve-Factor App Principles:
+
+    1. Have one repo for multiple deploymends (dev,stage,prod), and use branches or tags to manage them
+    2. Explicitly declare the dependencies
+            Use requirments.txt file to specify the dependencies of the app
+            Run the install of requirments in docker file
+    3. Store config in the environment
+
+            In the app: use os.getenv() to read env vars
+            In container: store the environments in .env file and refer to it from docker compose env_file:
+            In Kubernetes: store the config in Secrets for sensitive info and in ConfigMaps for non sensitive
+    4. Treat the services as attached resources
+            In app: 
+                Abstract the application configuration (the app receive the database url as env config)
+                Treat services as attached/dettached as will (implement retry logic in database connection)
+            In container: separete each service to a different container (app, database,..)
+    5. Create the components as stateless services:
+        Deployments manage stateless, scalable application instances, orchestrating seamless updates and rollbacks
+        Ensure that a specified number of identical Pods (apps) are running, enabling horizontal scaling and self-healing
+    6. Export services via port binding
+
+            In containers: 
+                Docker file: EXPOSE 8000
+                Docker-compose: -ports: 8000:8000
+            In Kubernetes:
+                ports:
+                    - containerPort: 8000
+    7. Scale out:
+
+            In kubernetes: replicas (how many replicas in a given time)
+    8. Keep dev,stage,prod as much as the same
+
+            Use env vars to configure based on environment
+            Use functions like os.path.dirname(os.path.abspath(__file__)), os.path.join to build the paths
+
+            In containers: use .env files
+            In kubernetes: use namespaces to isolate environments in the same cluster
+    9. Treat logging as event stream:
+
+            In app: 
+                    logging.basicConfig(level=logging.INFO)
+                    logger = logging.getLogger(__name__)
+            In kubernetes:
+                    pod logs written to stdout and stderr
+                    are automatically picked up by the Kubernetes logging agent and can be accessed via the kubectl logs command
+    10. Run admin/managment tasks as one-off process
+            In app: create init.sh script 
+            In docker: run the init.sh to ensure only-once execution on image creation
+
+
+
+https://developers.eksworkshop.com/docs/introduction/python/environment-setup
