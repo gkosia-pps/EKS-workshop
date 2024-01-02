@@ -1,0 +1,61 @@
+Terms:
+    Container image: self packaged app as image, the image is stored in container registry and can be deployied to any system that support containerization
+    Container: a running instance of an image, has its own filesystem, network interface and resources
+    Container registry: platform to store and distribute container images
+    Multi-architecture: the image can run on multiple CPU architectures (linux/amd64, linux/arm64, windows/amd64) 
+                        references to binaries and libraries compiled for multiple CPU architectures
+                        
+
+            
+Multi-Stage Builds in Docker for Cost Savings: by reducing the image size we have lower cost of storage, faster spinup of image
+                                               two-stage build process: "builder" and "runner"
+
+                                               Step 1: builder
+                                                       download base image
+                                                       install system dependencies
+                                                       copies requirments.txt and install packages as wheels
+                                               Runner:
+                                                        download base image
+                                                        install system dependencies
+                                                        copy wheel files from the builder stage
+                                                        installs Python packages
+                                                        copies the application code
+                                                        exposes the application's port
+                                                        set the startup command
+                        
+Docker compose: used to deploy multiple services together
+                
+                Use custom network to deploy services under the same network
+                services under the same custom network can cummunicate with service name
+                services outside of the custom network cannot reach apps in the custom network
+
+                By configuring volumes ensuring that the data persist even if the pod is killed, stoppped or deleted
+
+
+                docker-compose build: build the apps in compose file
+                docker-compose up: run the apps
+                docker-compose down: remove the containers, networks, volumes
+
+Upload to ECR repo:
+
+            1.Move to project folder
+            2.aws ecr create-repository --repository-name fastapi-microservices
+            3. Authendicate docker to ecr with aws credentials
+                aws ecr get-login-password \
+                --region ${AWS_REGION} | docker login \
+                --username AWS \
+                --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            4. Tag the image:  docker tag ...
+            5. Push the image: docker push
+
+            99. docker pull: pull an image from ecr to local docker env
+
+ECR repos in docker-compose:
+
+            In docker compose file add the imge element to be the image in ecr ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/fastapi-microservices:${IMAGE_VERSION}
+
+
+    
+Build multy-architecture docker images:
+
+        Use docker buildx

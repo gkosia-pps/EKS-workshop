@@ -1,0 +1,21 @@
+1. Installed aws cli
+2. Installed minikube (local kubernetes on docker): https://minikube.sigs.k8s.io/docs/start/
+        ~/.kube: config file for kubectl
+
+        minikube start: start the cluster
+        kubectl get po -A: get k8 prcesses
+        minikube dashboard: start the k8 dashboard
+        minikube stop: stop the cluster
+
+        kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0: deploy pod from image
+        kubectl expose deployment hello-minikube --type=NodePort --port=8080: expose on port
+        kubectl port-forward service/hello-minikube 7080:8080: enable port forwarding        
+
+3. Install eksctl: https://eksctl.io/getting-started/
+4. Install Helm: https://helm.sh/docs/intro/install/
+
+5. Configure aws  ???? ************ ??????
+
+6. Clone sample app
+
+7. Add AWS credentials in .env file ???? ************ ??????

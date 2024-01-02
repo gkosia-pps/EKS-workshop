@@ -49,4 +49,3 @@ Twelve-Factor App Principles:
 
 
 
-https://developers.eksworkshop.com/docs/introduction/python/environment-setup

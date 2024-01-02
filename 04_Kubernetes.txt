@@ -1,0 +1,43 @@
+Kubernetes: used to manage containerized applications
+
+    Control plane: manage the state of the cluster
+
+        API Server:      front-end, handle request and store data in etcd database
+        etcd database:   distributed key-value store for configuration data
+        Control Manager: running controllers that regulate the state of the cluster
+        Scheduler:       assign new workloads to nodes based on available resources
+
+
+    Data Plane: consists of nodes which acts as workers for the containerized apps
+
+        Main node components:
+            kubelet: responsible for managingf the state of the node (start, stop and maintain the containers on the node)
+            kube-proxy: responsible for communication between services and pods 
+            Container runtime: pulling the container images from registry and running them
+
+
+Kubernetes resources:
+
+    Deployment:  a specific number of pods is always running in the cluster
+                 resource limits and requests for the pods can be defined
+    Service:     used to expose an application outdside of the cluster
+                 Depending of the type of the service the cluster will route the incoming traffic to specific NodePort
+    StatefulSet: Manages the deployment and scaling of a set of Pods, and provides guarantees about the ordering and uniqueness of these Pods
+    
+    PersistentVolumeClaim: used to provide persistent storage even in case of pod deletion or restart
+
+    ConfigMaps: used to map scripts outside of the image
+                use to run environment configuration commands 
+
+Create Kubernetes cluster in minikube:  
+
+    1. minikube start
+    2. kubectl create namespace my-cool-app: create namespace
+            Namespaces are used to separate resources between apps, users or environments
+    3. kubectl create configmap db-init-script --from-file=init.sh=server/db/init.sh -n my-cool-app:
+            configmap: config map help to manage configuration outside of image
+                       we can map script files outside of image and run them later
+
+    4. kubectl get configmap -n my-cool-app: check the config maps
+    5. kubectl describe configmap db-init-script -n my-cool-app: see details about config map
+    6. 
